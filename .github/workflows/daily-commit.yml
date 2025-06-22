@@ -2,8 +2,8 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: '17 3 * * *' # Runs every day at 03:17 UTC
-  workflow_dispatch:     # Enables manual trigger
+    - cron: '17 3 * * *'
+  workflow_dispatch:
 
 jobs:
   commit-job:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Make dummy change
         run: |
@@ -22,5 +24,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "24f1001492@ds.study.iitm.ac.in"
           git add commit-log.txt
-          git commit -m "Automated daily commit on $(date)"
+          git commit -m "Automated daily commit on $(date)" || echo "Nothing to commit"
           git push
